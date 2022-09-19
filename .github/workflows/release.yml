@@ -38,7 +38,7 @@ jobs:
             --no-cache \
             --rm \
             --file=Dockerfile.${{ matrix.distro }}-latest \
-            --tag=charlesrocket/ansible-${{ matrix.distro }}:latest \
+            --tag=charlesrocket/${{ matrix.distro }}:latest \
             .
 
       - name: Push to GHCR
