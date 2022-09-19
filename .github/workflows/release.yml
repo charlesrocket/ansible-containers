@@ -1,0 +1,33 @@
+---
+name: Release
+
+on:
+  schedule:
+    - cron: "10 1 * * 0"
+
+  workflow_run:
+    workflows: ["Test"]
+    branches: [trunk]
+    types:
+      - completed
+
+jobs:
+  push:
+    name: Push
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro:
+          - alpine
+          - fedora
+          - rockylinux
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Push to GHCR
+        uses: macbre/push-to-ghcr@master
+        with:
+          image_name: ${{ matrix.distro }}
+          dockerfile: Dockerfile.${{ matrix.distro }}-latest
+          github_token: ${{ secrets.GITHUB_TOKEN }}
