@@ -15,6 +15,7 @@ jobs:
           - alpine
           - fedora
           - rockylinux
+          - ubuntu
 
     steps:
       - uses: actions/checkout@v3

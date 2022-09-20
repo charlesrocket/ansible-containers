@@ -21,6 +21,7 @@ jobs:
           - alpine
           - fedora
           - rockylinux
+          - ubuntu
 
     steps:
       - name: Checkout repository
