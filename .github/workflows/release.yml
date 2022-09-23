@@ -19,6 +19,7 @@ jobs:
       matrix:
         distro:
           - alpine
+          - debian
           - fedora
           - rockylinux
           - ubuntu
