@@ -1,33 +1,34 @@
 FROM debian:latest
 LABEL maintainer="charlesrocket"
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+
+WORKDIR /
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        sudo \
-       build-essential \
        systemd \
        systemd-sysv \
+       build-essential \
        wget \
-       iproute2 \
        libffi-dev \
        libssl-dev \
-       procps \
        python3-pip \
        python3-dev \
        python3-setuptools \
        python3-wheel \
-       python3-apt \
-    && apt-get autoremove -y && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get autoremove -y && apt-get clean
 
-RUN pip3 install --upgrade pip
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 install --no-cache-dir ansible
 
-RUN pip3 install cryptography ansible
+COPY initctl_faker .
+RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
 
-RUN mkdir -p /etc/ansible && echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+RUN mkdir -p /etc/ansible && printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 RUN rm -f /lib/systemd/system/multi-user.target.wants/getty.target
 
