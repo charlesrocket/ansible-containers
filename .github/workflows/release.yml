@@ -22,7 +22,7 @@ jobs:
           - debian
           - fedora
           - opensuse
-          - rockylinux
+          - rocky
           - ubuntu
 
     steps:
@@ -40,7 +40,7 @@ jobs:
           docker build \
             --no-cache \
             --rm \
-            --file=Dockerfile.${{ matrix.distro }}-latest \
+            --file=${{ matrix.distro }}/Dockerfile \
             --tag=charlesrocket/${{ matrix.distro }}:latest \
             .
 

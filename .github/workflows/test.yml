@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Test building image
-        run: docker build -t test-ansible -f Dockerfile.${{ matrix.distro }}-latest .
+        run: docker build -t test-ansible -f ${{ matrix.distro }}/Dockerfile .
 
       - name: Run the built image
         run: docker run --name test-container -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro test-ansible
