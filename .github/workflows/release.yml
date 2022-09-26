@@ -37,10 +37,10 @@ jobs:
 
       - name: Build
         run: |
+          cd ${{ matrix.distro }}
           docker build \
             --no-cache \
             --rm \
-            --file=${{ matrix.distro }}/Dockerfile \
             --tag=charlesrocket/${{ matrix.distro }}:latest \
             .
 
