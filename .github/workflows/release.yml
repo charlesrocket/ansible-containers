@@ -8,13 +8,13 @@ on:
   workflow_run:
     workflows: ["Test"]
     branches: [trunk]
-    types:
-      - completed
+    types: [completed]
 
 jobs:
   push:
     name: Push
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
         distro:
