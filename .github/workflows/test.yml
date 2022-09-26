@@ -16,7 +16,7 @@ jobs:
           - debian
           - fedora
           - opensuse
-          - rockylinux
+          - rocky
           - ubuntu
 
     steps:
