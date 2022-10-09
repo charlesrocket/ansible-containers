@@ -35,3 +35,44 @@ jobs:
 
       - name: Test Ansible
         run: docker exec --tty test-container env TERM=xterm ansible --version
+
+  push:
+    name: Push
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/trunk' }}
+    strategy:
+      matrix:
+        distro:
+          - alpine
+          - arch
+          - debian
+          - fedora
+          - opensuse
+          - rocky
+          - ubuntu
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build
+        run: |
+          cd ${{ matrix.distro }}
+          docker build \
+            --no-cache \
+            --rm \
+            --tag=charlesrocket/${{ matrix.distro }}:latest \
+            .
+
+      - name: Push to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u charlesrocket --password-stdin
+          docker tag charlesrocket/${{ matrix.distro }}:latest docker.pkg.github.com/charlesrocket/ansible-containers/${{ matrix.distro }}:latest
+          docker push docker.pkg.github.com/charlesrocket/ansible-containers/${{ matrix.distro }}:latest
