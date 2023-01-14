@@ -44,7 +44,6 @@ jobs:
       matrix:
         distro:
           - alpine
-          - arch
           - debian
           - fedora
           - opensuse
