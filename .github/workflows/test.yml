@@ -19,7 +19,6 @@ jobs:
           - fedora
           - opensuse
           - rocky
-          - ubuntu
 
     steps:
       - uses: actions/checkout@v3
@@ -48,7 +47,6 @@ jobs:
           - fedora
           - opensuse
           - rocky
-          - ubuntu
 
     steps:
       - name: Checkout repository
